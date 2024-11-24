@@ -2,6 +2,12 @@ import { marked } from "marked";
 import toast from "svelte-french-toast";
 import { Agent, RichText, type AtpBaseClient } from "@atproto/api";
 import { dev } from "$app/environment";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}
 
 export async function renderTextToMarkdownToHTML(text: string, agent: Agent | AtpBaseClient) {
   const rt = new RichText({ text });
