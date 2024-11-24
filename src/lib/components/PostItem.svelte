@@ -1,5 +1,4 @@
 <script lang="ts">
-  import posthog from "posthog-js";
   import { Tooltip } from "bits-ui";
   import Icon from "@iconify/svelte";
   import { page } from "$app/stores";
@@ -141,7 +140,6 @@
         </div>
         <button 
           onclick={() => {
-            posthog.capture("reported unsupported embed", { type: data.post.embed!.$type });
             toastSuccess("Unsupported embed reported!");
           }}
           class="self-end px-2 py-1 border rounded"
