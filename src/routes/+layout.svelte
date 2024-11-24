@@ -1,9 +1,7 @@
 <script lang="ts">
   import "../app.css";
-  import posthog from "posthog-js";
   import { Button } from "bits-ui";
   import Icon from "@iconify/svelte";
-  import { enhance } from "$app/forms";
   import { browser } from "$app/environment";
   import { Toaster } from "svelte-french-toast";
   import { setContext, type Snippet } from "svelte";
