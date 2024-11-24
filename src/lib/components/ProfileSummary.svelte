@@ -4,13 +4,15 @@
   import IconDrawer from "./IconDrawer.svelte";
   import type { ProfileViewDetailed } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
     import { Button } from "bits-ui";
+  import Avatar from "./Avatar.svelte";
 
   let { profile, hideFollowStats = false }: { profile: ProfileViewDetailed; hideFollowStats?: boolean } = $props();
 </script>
 
-<section class="flex flex-col gap-4">
+<section class="flex flex-col gap-4 mt-4">
   <div class="flex gap-4 items-center">
-    <img src={profile.avatar} alt={`${profile.handle} profile picture`} class="size-16 rounded" />
+
+    <Avatar src={profile.avatar} size="size-16" alt={`${profile.handle} profile picture`} />
     <div class="flex flex-col">
       <h1 class="text-lg font-bold">{profile.displayName}</h1>
       <h2 class="font-medium flex items-center gap-2">
