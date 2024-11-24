@@ -21,16 +21,16 @@
     <Drawer.Content 
       drawerDirection={direction}
       class={`
-        fixed flex bg-slate-800 p-6 text-white
-        ${direction === "bottom" && "bottom-0 left-0 right-0 h-fit pb-32 flex-col rounded-t-[10px]"}
-        ${direction === "top" && "left-0 right-0 top-0 h-[50%] flex-col rounded-b-[10px]"}
-        ${direction === "left" && "bottom-0 left-0 top-0 w-[50%] flex-row rounded-r-[10px]"}
-        ${direction === "right" && "bottom-0 right-0 top-0 w-[50%] flex-row rounded-l-[10px]"}
+        fixed flex bg-base-900 px-2 text-white z-50 border border-base-800 border-b-0 max-w-3xl mx-auto
+        ${direction === "bottom" && "bottom-0 left-0 right-0 h-fit pb-32 flex-col rounded-t-xl"}
+        ${direction === "top" && "left-0 right-0 top-0 h-[50%] flex-col rounded-b-xl"}
+        ${direction === "left" && "bottom-0 left-0 top-0 w-[50%] flex-row rounded-r-xl"}
+        ${direction === "right" && "bottom-0 right-0 top-0 w-[50%] flex-row rounded-l-xl"}
       `}
     > 
-      <div class="mx-auto h-1 w-full max-w-32 rounded-full bg-slate-200"></div>
+      <div class="mx-auto h-1 mt-2 w-full max-w-32 rounded-full bg-base-600"></div>
       <Drawer.Title class="text-xl font-bold">{title}</Drawer.Title>
-      <span class="my-auto pt-8">
+      <span class="my-auto pt-2">
         {@render content()}  
       </span>
     </Drawer.Content>

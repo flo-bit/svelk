@@ -7,7 +7,7 @@ import type { PageServerLoadEvent } from "../$types";
 export async function load({ locals }: PageServerLoadEvent) {
   const user = locals.user;
   if (!user) { 
-    error(401, "Not logged in");
+    return { drafts: [] };
   }
 
   const drafts = await db.query.DraftPost.findMany({
