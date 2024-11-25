@@ -40,6 +40,7 @@
     "@tailwindcss/forms": "^0.5.9",
     "@tanstack/svelte-query": "^5.59.20",
     "@upstash/qstash": "^2.7.14",
+    "@use-gesture/vanilla": "^10.3.1",
     "bits-ui": "^0.21.16",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.33.0",
