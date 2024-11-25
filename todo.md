@@ -1,0 +1,6 @@
+- mobile sidebar
+- liking posts
+- reposting/quoting posts
+- comment on posts
+- show other embeds
+- show image in full size on click	

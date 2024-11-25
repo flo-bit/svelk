@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@iconify/svelte";
-  import { toastSuccess } from "$lib/utils";
+  import { numberToHumanReadable, toastSuccess } from "$lib/utils";
   import IconDrawer from "./IconDrawer.svelte";
   import type { ProfileViewDetailed } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
     import { Button } from "bits-ui";
@@ -14,25 +14,25 @@
 
     <Avatar src={profile.avatar} size="size-16" alt={`${profile.handle} profile picture`} />
     <div class="flex flex-col">
-      <h1 class="text-lg font-bold">{profile.displayName}</h1>
+      <h1 class="text-lg font-semibold">{profile.displayName}</h1>
       <h2 class="font-medium flex items-center gap-2">
         @{profile.handle}
       </h2>
 
       {#if !hideFollowStats}
         <div class="flex gap-4">
-          <p>{profile.followersCount} Followers</p>
-          <p>{profile.followsCount} Following</p>
+          <p>{numberToHumanReadable(profile.followersCount)} Followers</p>
+          <p>{numberToHumanReadable(profile.followsCount)} Following</p>
         </div>
       {/if}
     </div>
   </div>
 
-  <div class="text-xs prose prose-invert prose-p:text-white prose-sm prose-pink"> 
+  <!-- <div class="text-xs prose prose-invert prose-p:text-white prose-sm prose-pink prose-a:no-underline"> 
     {@html profile.description}
-  </div>
+  </div> -->
 
-  <section class="w-full flex gap-4 h-fit">
+  <!-- <section class="w-full flex gap-4 h-fit">
     <IconDrawer>
       {#snippet trigger()}
         <Button.Root class="flex items-center bg-pink-500 px-4 py-2 rounded w-full gap-4 text-sm hover:bg-pink-600/95 active:scale-95 active:transition-all duration-150">
@@ -81,5 +81,5 @@
         <p>Statistics</p>
       </Button.Root>
     </a>
-  </section>
+  </section> -->
 </section>

@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({ url }) => {
   const response = await fetch(listRecordsUrl.toString());
   const parsed = await response.json();
 
-  // filter by date and remove replies
+  // filter by date and remove replies, reposts
   const records = parsed.feed.filter((r: FeedViewPost) => 
     !(Object.keys(r).find((e) => e === "reply"))
     && !(r.reason && r.reason.$type === "app.bsky.feed.defs#reasonRepost")
@@ -48,9 +48,7 @@ export const GET: RequestHandler = async ({ url }) => {
     const aEngagement = a.post.likeCount! + a.post.replyCount! + a.post.repostCount! + a.post.quoteCount!;
     const bEngagement = b.post.likeCount! + b.post.replyCount! + b.post.repostCount! + b.post.quoteCount!;
 
-    if (aEngagement > bEngagement) { return -1; }
-    else if (bEngagement > aEngagement) { return 1; }
-    else { return 0; }
+    return bEngagement - aEngagement;
   });
 
   const likes = records.reduce((accumulator, current) => {

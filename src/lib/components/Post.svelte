@@ -4,19 +4,71 @@
   import RelativeTime from "./relative-time";
   import { page } from "$app/stores";
   import { applyAction, enhance } from "$app/forms";
+  import Embed from "./embeds/Embed.svelte";
+  import { cn, numberToHumanReadable, renderPostAsHtml } from "$lib/utils";
+  import { onMount } from "svelte";
 
-  let { data }: { data: FeedViewPost } = $props();
+  import Post from "./Post.svelte";
+
+  let {
+    data,
+    class: className,
+    intersect,
+  }: { data: FeedViewPost; class?: string; intersect?: () => void } = $props();
   const bookmarks = $page.data.bookmarks as Set<string>;
   let isBookmarked = $state(bookmarks.has(data.post.uri) ?? false);
+
+  onMount(() => {
+    const options = {
+      root: document.querySelector("#scrollArea"),
+      rootMargin: "0px",
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver(() => {
+      intersect?.();
+    }, options);
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  });
+
+  let element: HTMLElement;
+  // console.log(data);
 </script>
 
+<!-- {#if data.reply}
+<Post data={{post: data.reply.parent}} />
+{/if} -->
+
 <div
-  class="px-4 py-3 text-base-950 transition-colors duration-200 dark:text-base-50"
+  bind:this={element}
+  class={cn(
+    "px-4 py-3 text-base-950 transition-colors duration-200 dark:text-base-50",
+    className
+  )}
 >
+  {#if data.reason && data.reason.$type === "app.bsky.feed.defs#reasonRepost"}
+    <div class="text-xs font-medium pl-4 mb-3 inline-flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-3">
+        <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z" clip-rule="evenodd" />
+      </svg>
+      
+      <div class="inline-flex gap-1">
+      reposted by 
+      <a href={"/p/" + data.reason.by.handle} class="font-bold hover:text-accent-400">
+        @{data.reason.by.handle}
+      </a>
+    </div>
+    </div>
+  {/if}
   <div class="flex gap-4">
     <Avatar
-      link={"/p/" + data.post.author.handle}
-      src={data.post.author.avatar}
+      link={"/p/" + data.post.author?.handle}
+      src={data.post.author?.avatar}
     />
 
     <div class="w-full">
@@ -41,21 +93,23 @@
 					class="ease h-8 text-accent-600 transition-all duration-200 hover:scale-110 hover:text-accent-500"
 				/>
 			</a> -->
+      {#if data.post.record?.createdAt}
         <a
           href={"#"}
           class="block text-sm text-base-600 no-underline hover:text-accent-700 dark:text-base-400 dark:hover:text-accent-300"
         >
           <RelativeTime
-            date={new Date(data.post.record.createdAt)}
+            date={new Date(data.post.record?.createdAt)}
             locale="en"
           />
         </a>
+      {/if}
       </div>
 
       <p
         class="text-sm prose prose-invert prose-p:text-white prose-sm prose-pink prose-a:no-underline"
       >
-        {@html data.html}
+        {@html renderPostAsHtml(data.post)}
       </p>
 
       <!-- {embed && <Embed embed={embed} postUrl={postUrl} />} -->
@@ -66,25 +120,7 @@
 			{formatter.format(new Date(createdAt))}
 		</a> -->
 
-      {#if data.post.embed}
-        <div class="flex gap-2 flex-col pt-2 text-sm">
-          {#if data.post.embed.$type === "app.bsky.embed.images#view"}
-            {#each data.post.embed.images as { fullsize: string; alt: string }[] as image}
-              <img
-                src={image.fullsize}
-                alt={image.alt}
-                class="w-full rounded-lg border dark:border-base-400/20"
-              />
-            {/each}
-          {:else if data.post.embed.$type === "app.bsky.embed.external#view"}
-            <img
-              src={data.post.embed.external!.uri}
-              alt={data.post.embed.external!.description}
-              class="w-full p-2 rounded-lg border dark:border-base-400/20"
-            />
-          {/if}
-        </div>
-      {/if}
+      <Embed {data} />
 
       <div
         class="mt-4 flex justify-between gap-2 text-base-500 dark:text-base-400"
@@ -105,7 +141,7 @@
             />
           </svg>
           {#if data.post.replyCount}
-            {data.post.replyCount}
+            {numberToHumanReadable(data.post.replyCount)}
           {/if}
         </button>
 
@@ -125,7 +161,7 @@
             />
           </svg>
           {#if data.post.repostCount}
-            {data.post.repostCount}
+            {numberToHumanReadable(data.post.repostCount)}
           {/if}
         </button>
 
@@ -145,7 +181,7 @@
             />
           </svg>
           {#if data.post.likeCount}
-            {data.post.likeCount}
+            {numberToHumanReadable(data.post.likeCount)}
           {/if}
         </button>
 
@@ -175,7 +211,7 @@
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 class="-m-1.5 size-7 rounded-full p-1.5 transition-all duration-100 group-hover:bg-pink-500/10 group-hover:text-pink-700 dark:group-hover:text-pink-400"
-                >
+              >
                 <path
                   fill-rule="evenodd"
                   d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
@@ -190,7 +226,7 @@
                 stroke-width="1.5"
                 stroke="currentColor"
                 class="-m-1.5 size-7 rounded-full p-1.5 transition-all duration-100 group-hover:bg-pink-500/10 group-hover:text-pink-700 dark:group-hover:text-pink-400"
-                >
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"

@@ -4,8 +4,6 @@
   import { createInfiniteQuery } from "@tanstack/svelte-query";
   import FeedTimeline from "$lib/components/FeedTimeline.svelte";
   import type { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs.js";
-  import Icon from "@iconify/svelte";
-  import { fly } from "svelte/transition";
 
   import { getSelectedFeed } from "$lib/state.svelte"; 
 
@@ -71,15 +69,9 @@
       {:else if $discoveryQuery.isError}
         <p>Error</p>
       {:else if $discoveryQuery.isSuccess}
-        <FeedTimeline feed={discoveryFeed} />
-        <button 
-          onclick={() => { 
-            $discoveryQuery.fetchNextPage(); 
-          }}
-          class="px-4 py-2 border rounded"
-        >
-          Load more...
-        </button>
+        <FeedTimeline feed={discoveryFeed} loadMore={() => $discoveryQuery.fetchNextPage()} />
+        
+        <p class="text-center mt-4 text-sm text-base-400">loading more...</p>
       {/if}
     </section>
   {/if}
@@ -93,15 +85,10 @@
       {:else if $followingQuery.isError}
         <p>Error</p>
       {:else if $followingQuery.isSuccess}
-        <FeedTimeline feed={followingFeed} />
-        <button 
-          onclick={() => { 
-            $followingQuery.fetchNextPage(); 
-          }}
-          class="px-4 py-2 border rounded"
-        >
-          Load more...
-        </button>
+        <FeedTimeline feed={followingFeed} loadMore={() => $followingQuery.fetchNextPage()} />
+        
+          <p class="text-center mt-4 text-sm text-base-400">loading more...</p>
+
       {/if}
     </section>
   {/if}

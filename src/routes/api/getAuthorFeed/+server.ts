@@ -1,4 +1,3 @@
-import { renderTextToMarkdownToHTML } from "$lib/utils";
 import { Agent, AtpBaseClient } from "@atproto/api";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
 
@@ -18,18 +17,12 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
   if (agent instanceof Agent) {
     const { data } = await agent.getAuthorFeed({ actor, cursor, limit });
-    for (const post of data.feed) {
-      // @ts-ignore
-      post.html = await renderTextToMarkdownToHTML(post.post.record.text, locals.agent);
-    }
+    
     return json({ feed: data.feed, nextCursor: data.cursor });
   }
   else if (agent instanceof AtpBaseClient) {
     const { data } = await agent.app.bsky.feed.getAuthorFeed({ actor, cursor, limit });
-    for (const post of data.feed) {
-      // @ts-ignore
-      post.html = await renderTextToMarkdownToHTML(post.post.record.text, locals.agent);
-    }
+    
     return json({ feed: data.feed, nextCursor: data.cursor });
   }
 

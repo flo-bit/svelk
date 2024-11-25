@@ -1,4 +1,3 @@
-import { renderTextToMarkdownToHTML } from "$lib/utils";
 import { AtpBaseClient } from "@atproto/api";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
 
@@ -15,11 +14,6 @@ export const GET: RequestHandler = async ({ url, locals }) => {
   const limit = Number(queryParams.get("limit")) || 10;
 
   const { data } = await agent.getTimeline({ cursor, limit });
-
-  for (const post of data.feed) {
-    // @ts-ignore
-    post.html = await renderTextToMarkdownToHTML(post.post.record.text, locals.agent);
-  }
 
   return json({ feed: data.feed, nextCursor: data.cursor });
 }

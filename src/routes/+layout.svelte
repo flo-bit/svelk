@@ -3,7 +3,8 @@
   import { Button } from "bits-ui";
   import Icon from "@iconify/svelte";
   import { browser } from "$app/environment";
-  import { Toaster } from "svelte-french-toast";
+  import { Toaster } from "svelte-sonner";
+
   import { setContext, type Snippet } from "svelte";
   import { toastError } from "$lib/utils";
   import IconDrawer from "$lib/components/IconDrawer.svelte";
@@ -123,25 +124,18 @@
       <div class="h-6 w-px bg-base-900/10 lg:hidden" aria-hidden="true"></div>
 
       <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-        <!-- <form class="relative flex flex-1" action="#" method="GET">
-          <label for="search-field" class="sr-only">Search</label>
-          <svg class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-base-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
-          </svg>
-          <input id="search-field" class="block size-full border-0 py-0 pl-8 pr-0 text-base-900 placeholder:text-base-400 focus:ring-0 sm:text-sm" placeholder="Search..." type="search" name="search">
-        </form> -->
         <div class="flex-1"></div>
 
         <User {user} />
       </div>
     </div>
 
-    <div>
+    <div class="h-[calc(100vh-4rem)] overflow-hidden"           id="scrollArea"
+    >
       <QueryClientProvider client={queryClient}>
         <div
-          class="font-switzer relative w-full h-full min-w-full min-h-full bg-base-900 border border-r-0 border-base-800 rounded-l-xl text-white pt-4 pb-8"
+          class="relative w-full h-full min-w-full min-h-full bg-base-900 border border-r-0 border-base-800 rounded-l-xl text-white pt-4 pb-8 overflow-y-auto"
         >
-          <Toaster />
           <main class="flex flex-col gap-4 pb-16">
             {@render children()}
           </main>
@@ -171,48 +165,20 @@
               {/snippet}
             </IconDrawer>
           {/if}
-          <!-- 
-    <menu class="z-10 flex flex-col gap-4 items-end fixed bottom-0 inset-x-0"> 
-      <section class="flex w-full h-fit p-4 border-t justify-between bg-slate-800">
-        <div class="w-fit flex gap-4 items-center">
-          <a 
-            href="/search"
-            onclick={() => {
-              posthog.capture("clicked: bottom menu", { button: "Search" });
-            }}
-          >
-            <Icon icon="heroicons:magnifying-glass-solid" class="size-8" />
-          </a>
-          <a
-            href="/bookmarks"
-            onclick={() => {
-              posthog.capture("clicked: bottom menu", { button: "Bookmarks" });
-            }}
-          >
-            <Icon icon="hugeicons:all-bookmark" class="size-8" />
-          </a>
-          <a
-            href="/"
-            onclick={() => {
-              posthog.capture("clicked: bottom menu", { button: "Home" });
-            }}
-          >
-            <Icon icon="iconamoon:home-light" class="size-8" />
-          </a>
-
-        </div>
-
-        <div class="flex gap-4 self-end items-center">
-          {#if bottomControls.length > 0}
-            {#each bottomControls as controller: Snippet}
-              {@render controller()}
-            {/each}
-          {/if}
-        </div>
-      </section>
-    </menu> -->
         </div>
       </QueryClientProvider>
     </div>
   </div>
 </div>
+
+<Toaster
+  toastOptions={{
+    unstyled: true,
+    classes: {
+      toast:
+        "flex items-center gap-2 p-4 bg-base-800 border border-base-700 shadow shadow-black rounded-xl text-base-50",
+    },
+  }}
+  position="bottom-left"
+  theme="dark"
+/>

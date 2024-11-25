@@ -6,7 +6,7 @@ export function getFormatter(locale: string) {
 	if (formatters.has(locale)) {
 		return formatters.get(locale)!
 	}
-	const formatter = new Intl.RelativeTimeFormat(locale, { numeric: 'auto', style: 'narrow' })
+	const formatter = new Intl.RelativeTimeFormat(locale, { numeric: 'always', style: 'narrow' })
 	formatters.set(locale, formatter)
 	return formatter
 }

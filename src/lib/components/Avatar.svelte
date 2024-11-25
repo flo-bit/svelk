@@ -19,7 +19,7 @@
 		)}
 	>
 		{#if src}
-			<img class="h-full w-full object-cover" {src} {alt} />
+			<img loading="lazy" class="h-full w-full object-cover" {src} {alt} />
 		{:else}
 			<svg
 				class="size-full text-base-300 dark:text-base-600"

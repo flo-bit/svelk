@@ -1,4 +1,3 @@
-import { renderTextToMarkdownToHTML } from "$lib/utils";
 import type { Agent } from "@atproto/api";
 import type { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { error, json, type RequestHandler } from "@sveltejs/kit";
@@ -19,11 +18,6 @@ export const GET: RequestHandler = async ({ locals }) => {
   const posts = response.data.posts.map((p) => {
     return { post: p } as FeedViewPost;
   });
-
-  for (const post of posts) {
-    // @ts-ignore
-    post.html = await renderTextToMarkdownToHTML(post.post.record.text, locals.agent as Agent);
-  }
 
   return json({ posts });
 }
