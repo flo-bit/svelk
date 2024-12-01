@@ -1,7 +1,7 @@
 <script lang="ts">
   import External from "./External.svelte";
   import Images from "./Images.svelte";
-  import Video from "./Video.svelte";
+  // import Video from "./Video.svelte";
   const { data } = $props();
 </script>
 
@@ -11,8 +11,8 @@
 	  <Images data={data.post.embed.images} />
     {:else if data.post.embed.$type === "app.bsky.embed.external#view" && data.post.embed.external?.uri}
       <External data={data.post.embed.external} />
-    {:else if data.post.embed.$type === "app.bsky.embed.video#view"}
-      <Video data={data.post.embed} />
+    <!-- {:else if data.post.embed.$type === "app.bsky.embed.video#view"}
+      <Video data={data.post.embed} /> -->
     {/if}
   </div>
 {/if}
