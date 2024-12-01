@@ -1,4 +1,26 @@
-# myb: custom bsky client
+# svelk - custom bsky client
+
+this client aims to be more an exploration of what a social media client could be like and what features could be useful than a polished clone of the bluesky client.
+
+based on [myb](https://github.com/zeucapua/myb)
+
+work in progress
+
+deployed at https://svelk.vercel.app
+
+## run locally
+
+1. clone repo
+2. `npm install`
+3. rename `.env.example` to `.env` and set the variables
+  - `DATABASE_URL="file:local.db"`
+  - `DATABASE_AUTH_TOKEN="abc"`
+  
+  - `MYB_PASSWORD` = create a password with `openssl rand -base64 32` 
+4. `npm run db:migrate`
+5. `npm run dev`
+6. open browser and navigate to `http://localhost:5173`
+
 
 ## Tech Stack
 - Svelte(Kit): JS UI and meta framework
@@ -6,32 +28,3 @@
 - Turso: SQLite hosted service
 - Bits-UI: Svelte component library
 - `@atproto/api` and `@atproto/oauth-client-node`: AT protocol SDK and OAuth libraries
-
-## Features
-- [x] Login/Logout via OAuth
-- [x] Profile pages
-  - [x] Search users
-  - [x] Show Description
-  - [x] Copy DID/Handle
-  - [x] Open handle domain site
-  - [x] Follow/Unfollow user
-  - [x] Skeets Stats Page
-- [ ] Posts
-  - [x] Render posts' facets
-  - [x] Draft posts
-  - [ ] Bookmark posts
-  - [ ] CRON-based scheduled posting
-  - [ ] Like/Unlike
-  - [ ] Repost + Quote Post
-  - [ ] Comment
-  - [ ] [Draft + Publish Threads](https://github.com/zeucapua/myb/issues/1)
-- [ ] Feeds
-  - [x] Post pagination
-  - [x] Toggle reposts/replies
-  - [x] Read 'Following' + 'Discovery'
-  - [ ] Read any feed given URI
-     
-
-### ⚠️ Note this is in _ALPHA_
-
-Functionality is priority, styling second, so if the UI/UX is a little unintuitive, please know it is subject to change as more users try it out! If you find bugs or want features not listed above, please send a GitHub issue my way!
