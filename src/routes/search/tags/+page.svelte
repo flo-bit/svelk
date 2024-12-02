@@ -45,7 +45,7 @@
     <div class="flex items-center w-full space-x-2">
       <input 
         type="text" 
-        placeholder="Enter search query..." 
+        placeholder="Enter search query...(required)" 
         bind:value={searchQuery} 
         class="border p-2 rounded text-black w-full h-12 "
       />
