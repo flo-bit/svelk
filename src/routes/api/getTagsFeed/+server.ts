@@ -7,7 +7,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
   }
   const body = await request.json()
-  const { data } = await agent.app.bsky.feed.searchPosts(body);
+  console.log({q: body.q, tag: body.tag})
+  const { data } = await agent.app.bsky.feed.searchPosts({q: body.q, tag: body.tag});
   const transformedData = {
     feed: data.posts.map(post => ({ post }))
   };
